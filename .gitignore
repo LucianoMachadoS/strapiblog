@@ -126,8 +126,8 @@ coverage
 .env
 license.txt
 exports
-.strapi
-dist
-build
+#.strapi
+#dist
+#build
 .strapi-updater.json
 .strapi-cloud.json
