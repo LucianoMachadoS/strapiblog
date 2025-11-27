@@ -1,3 +1,7 @@
-const strapi = require("@strapi/strapi");
+const { createStrapi } = require("@strapi/strapi");
 
-strapi().start();
+const app = createStrapi({
+  distDir: "./dist", // Importante: Strapi 5 usa 'dist' por padrão
+});
+
+app.start();
