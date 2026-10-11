@@ -1,61 +1,42 @@
-# 🚀 Getting started with Strapi
+# 🚀 Blog Strapi — versão de deploy (AWS)
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+Versão de **produção** do [blog-strapi](https://github.com/LucianoMachadoS/blog-strapi), preparada para rodar em um servidor na **AWS**.
 
-### `develop`
+![Strapi](https://img.shields.io/badge/Strapi_5-4945FF?style=flat&logo=strapi&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazonwebservices&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+## Por que este repositório tem a pasta `dist/`
 
-```
-npm run develop
-# or
-yarn develop
-```
+O build do painel administrativo do Strapi consome mais memória do que o servidor da AWS tinha disponível, e o processo falhava no servidor. A solução foi:
 
-### `start`
+1. Rodar `npm run build` na minha máquina
+2. Versionar a pasta `dist/` já compilada neste repositório
+3. No servidor, apenas instalar as dependências e iniciar com um `server.js` que aponta para o `dist/`
 
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
-
-```
-npm run start
-# or
-yarn start
-```
-
-### `build`
-
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
-
-```
-npm run build
-# or
-yarn build
+```js
+const { createStrapi } = require("@strapi/strapi");
+const app = createStrapi({ distDir: "./dist" });
+app.start();
 ```
 
-## ⚙️ Deployment
+Assim o servidor só executa o Strapi, sem precisar compilar nada.
 
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
+## 🚀 Como subir no servidor
 
+```bash
+git clone https://github.com/LucianoMachadoS/strapiblog.git
+cd strapiblog
+npm install --omit=dev
+# configure o .env (banco PostgreSQL e Cloudinary)
+node server.js
 ```
-yarn strapi deploy
-```
 
-## 📚 Learn more
+## 📚 O que aprendi
 
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
-
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
-
-## ✨ Community
-
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
+Deploy de uma aplicação Node em servidor Linux na AWS, limites de memória em instâncias pequenas e separação entre build e execução.
 
 ---
-
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+Projeto desenvolvido no curso *JavaScript e TypeScript do básico ao avançado* (Luiz Otávio Miranda, Udemy).
+Feito por [Luciano Machado](https://github.com/LucianoMachadoS) · [LinkedIn](https://www.linkedin.com/in/luciano-machado-9253a1265/)
